@@ -9,6 +9,7 @@ const gulp         = require('gulp'),
       cssnano      = require('gulp-cssnano'),
       nodemon      = require('gulp-nodemon'),
       sourcemaps   = require('gulp-sourcemaps'),
+      browserSync  = require('browser-sync'),
       autoprefixer = require('gulp-autoprefixer');
 
 //======================
@@ -26,6 +27,18 @@ gulp.task('workflow', function() {
     .pipe(sourcemaps.write('./'))
 
   .pipe(gulp.dest('./public/css'))
+  .pipe(browserSync.reload({
+    stream: true
+  }));
+});
+
+gulp.task('browserSync', function() {
+  browserSync.init({
+    proxy: 'http://localhost:3000',
+    files: './public/**/*.*',
+    notify: false,
+    port: 5000
+  });
 });
 
 
@@ -60,7 +73,7 @@ gulp.task('nodemon', function() {
 //======================================
 // Watch files and call appropriate task
 //======================================
-gulp.task('watch', function () {
+gulp.task('watch', ['browserSync'], function () {
     watch('./src/**/*.js', batch(function (events, done) {
         gulp.start('build', done);
     }));
