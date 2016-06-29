@@ -12,10 +12,11 @@
     <p ng-show="!editable">
       {{user.firstName}} {{user.lastName}}
     </p>
-    <form ng-submit="updateUser(user)" name="editForm">
+    <form ng-submit="updateUser(user)" name="editForm" ng-show="editable">
       <input type="text" placeholder="First Name" ng-model="upfname" required />
       <input type="text" placeholder="Last Name" ng-model="uplname" required />
-      <button type="submit" name="button">Add</button>
+      <button type="button" ng-click="editable=false;" id="edit">Edit</button>
+      <button type="submit" id="save">Save</button>
     </form>
     <button id="update" type="button" ng-click="editable=true;" ng-disabled="editable">Update</button>
     <button id="delete" type="button" ng-click="deleteUser(user)" ng-disabled="editable">Delete</button>

@@ -36,7 +36,7 @@ assignmentApp
     $scope.updateUser = function(user) {
       console.log($scope.upfname);
       console.log($scope.uplname);
-      User.update({ _id: user._id}, {fname: user.firstName, lname: user.lastName }).$promise
+      User.update({ _id: user._id}, {fname: $scope.upfname, lname: $scope.uplname }).$promise
         .then(function() {
           $scope.users = $scope.populateUsers();
         });
