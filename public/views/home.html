@@ -1,0 +1,18 @@
+<div class="container">
+  <h4>Add a User</h4>
+
+  <form ng-submit="addUser()" name="addForm">
+    <input type="text" placeholder="First Name" ng-model="fname" required />
+    <input type="text" placeholder="Last Name" ng-model="lname" required />
+    <button type="submit" name="button">Add</button>
+  </form>
+
+  <h4>View Users</h4>
+  <div class="user-tab" ng-repeat="user in users">
+    <p>
+      {{ user.firstName }} {{ user.lastName }}
+    </p>
+    <button type="button" ng-click="deleteUser(user)">Delete</button>
+  </div>
+
+</div>

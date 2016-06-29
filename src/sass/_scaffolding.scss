@@ -1,6 +1,9 @@
 // Define typography
-html {
+html, body {
   font: $font-style $font-variant $font-weight #{$font-size}/#{$line-height} $font-family;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 // Vertically center anything
