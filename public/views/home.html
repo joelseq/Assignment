@@ -9,10 +9,16 @@
 
   <h4>View Users</h4>
   <div class="user-tab" ng-repeat="user in users">
-    <p>
-      {{ user.firstName }} {{ user.lastName }}
+    <p ng-show="!editable">
+      {{user.firstName}} {{user.lastName}}
     </p>
-    <button type="button" ng-click="deleteUser(user)">Delete</button>
+    <form ng-submit="updateUser(user)" name="editForm">
+      <input type="text" placeholder="First Name" ng-model="upfname" required />
+      <input type="text" placeholder="Last Name" ng-model="uplname" required />
+      <button type="submit" name="button">Add</button>
+    </form>
+    <button id="update" type="button" ng-click="editable=true;" ng-disabled="editable">Update</button>
+    <button id="delete" type="button" ng-click="deleteUser(user)" ng-disabled="editable">Delete</button>
   </div>
 
 </div>

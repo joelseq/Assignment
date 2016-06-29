@@ -2,12 +2,13 @@ assignmentApp
   .controller('mainCtrl', ['$scope', 'User', function($scope, User) {
     $scope.users = [];
 
-
     $scope.populateUsers = function() {
       return User.query();
     };
 
     $scope.users = $scope.populateUsers();
+
+    $scope.editable = false;
 
     $scope.addUser = function() {
       User.save({ fname: $scope.fname, lname: $scope.lname }).$promise
@@ -32,5 +33,13 @@ assignmentApp
         });
     };
 
+    $scope.updateUser = function(user) {
+      console.log($scope.upfname);
+      console.log($scope.uplname);
+      User.update({ _id: user._id}, {fname: user.firstName, lname: user.lastName }).$promise
+        .then(function() {
+          $scope.users = $scope.populateUsers();
+        });
+    };
 
   }]);
