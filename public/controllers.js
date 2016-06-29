@@ -33,10 +33,12 @@ assignmentApp
         });
     };
 
+    $scope.updatedUser = {};
+
     $scope.updateUser = function(user) {
-      console.log($scope.upfname);
-      console.log($scope.uplname);
-      User.update({ _id: user._id}, {fname: $scope.upfname, lname: $scope.uplname }).$promise
+      console.log($scope.updatedUser.fname);
+      console.log($scope.updatedUser.lname);
+      User.update({ _id: user._id}, {fname: $scope.updatedUser.fname, lname: $scope.updatedUser.lname }).$promise
         .then(function() {
           $scope.users = $scope.populateUsers();
         });
