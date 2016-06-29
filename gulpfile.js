@@ -32,6 +32,10 @@ gulp.task('workflow', function() {
   }));
 });
 
+
+//=================================
+// Browser Sync
+//=================================
 gulp.task('browserSync', function() {
   browserSync.init({
     proxy: 'http://localhost:3000',
