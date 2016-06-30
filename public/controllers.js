@@ -27,13 +27,6 @@ assignmentApp
     $scope.updatedUser = {};
 
     $scope.updateUser = function(user) {
-      /*
-      User.update({ _id: user._id}, {fname: $scope.updatedUser.fname, lname: $scope.updatedUser.lname }).$promise
-        .then(function() {
-          $scope.updatedUser = {};
-          $scope.users = $scope.populateUsers();
-        });
-        */
       ServerService.sendPut({fname: $scope.updatedUser.fname, lname: $scope.updatedUser.lname}, "/" + user._id, SUCCESS_MESSAGE, FAILURE_MESSAGE);
       $scope.updatedUser = {};
     };
