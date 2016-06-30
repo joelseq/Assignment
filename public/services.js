@@ -9,16 +9,19 @@
   function ServerService($http, $rootScope) {
     let self = this;
 
+    function appendTransform(defaults, transform) {
+
+      // We can't guarantee that the default transformation is an array
+      defaults = angular.isArray(defaults) ? defaults : [defaults];
+
+      // Append the new transformation to the defaults
+      return defaults.concat(transform);
+    }
+
     /* Get Request */
     self.sendGet = function(param, url, successMessage, failureMessage) {
 
-      $http.get(SERVER_DOMAIN + url)
-        .then(function successCallback(data) {
-          $rootScope.$broadcast(successMessage, data);
-        },
-        function errorCallback(data) {
-          $rootScope.$broadcast(failureMessage, data);
-        });
+      return $http.get(SERVER_DOMAIN + url , param);
 
     };
 
@@ -26,40 +29,40 @@
     self.sendPost = function(param, url, successMessage, failureMessage) {
 
         $http.post(SERVER_DOMAIN + url , param)
-          .then(function successCallback(data) {
+          .success(function (data) {
             $rootScope.$broadcast(successMessage, data);
-          },
-          function errorCallback(data) {
-            $rootScope.$broadcast(failureMessage, data);
+          })
+          .error(function (data) {
+            $rootScope.$broadcast(failureMessage, data)
           });
-
     };
 
     /* Put Request */
     self.sendPut = function(param, url, successMessage, failureMessage) {
 
-      $http.put(SERVER_DOMAIN + url , param)
-        .then(function successCallback(data) {
+      $http.put(SERVER_DOMAIN + url, param)
+        .success(function (data) {
           $rootScope.$broadcast(successMessage, data);
-        },
-        function errorCallback(data) {
+        })
+        .error(function (data) {
           $rootScope.$broadcast(failureMessage, data);
         });
-
     };
 
     /* Delete Request */
-    self.sendDelete = function(param, url, successMessage, failureMessage) {
+    self.sendDelete = function(url, successMessage, failureMessage) {
 
-      $http.post(SERVER_DOMAIN + url, param)
-        .then(function successCallback(data) {
+      $http.delete(SERVER_DOMAIN + url)
+        .success(function(data) {
           $rootScope.$broadcast(successMessage, data);
-        },
-        function errorCallback(data) {
+        })
+        .error(function(data) {
           $rootScope.$broadcast(failureMessage, data);
         });
+    }
 
-    };
+
+    return self;
 
   }
 })();

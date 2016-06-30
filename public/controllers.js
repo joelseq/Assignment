@@ -5,38 +5,23 @@ assignmentApp
     $scope.users = [];
 
     $scope.populateUsers = function() {
-      return ServerService.sendGet({}, "/users", SUCCESS_MESSAGE, FAILURE_MESSAGE);
+      ServerService.sendGet({}, "", SUCCESS_MESSAGE, FAILURE_MESSAGE)
+        .then( function(response) {
+          $scope.users = response.data;
+        });
     };
 
-    $scope.users = $scope.populateUsers();
+    $scope.populateUsers();
 
     $scope.editable = false;
 
     $scope.addUser = function() {
-      /*
-      User.save({ fname: $scope.fname, lname: $scope.lname }).$promise
-        .then(function() {
-          $scope.fname = '';
-          $scope.lname = '';
-          $scope.addForm.$setPristine();
-          $scope.users = $scope.populateUsers();
-        })
-        .catch(function(response) {
-          $scope.fname = '';
-          $scope.lname = '';
-          $scope.addForm.$setPristine();
-        });
-        */
+       ServerService.sendPost({ fname: $scope.fname, lname: $scope.lname }, "", SUCCESS_MESSAGE, FAILURE_MESSAGE);
     };
 
 
     $scope.deleteUser = function(user) {
-      /*
-      User.delete({ _id: user._id }).$promise
-        .then(function() {
-          $scope.users = $scope.populateUsers();
-        });
-      */
+      ServerService.sendDelete("/" + user._id, SUCCESS_MESSAGE, FAILURE_MESSAGE);
     };
 
     $scope.updatedUser = {};
@@ -49,6 +34,18 @@ assignmentApp
           $scope.users = $scope.populateUsers();
         });
         */
+      ServerService.sendPut({fname: $scope.updatedUser.fname, lname: $scope.updatedUser.lname}, "/" + user._id, SUCCESS_MESSAGE, FAILURE_MESSAGE);
+      $scope.updatedUser = {};
     };
+
+    $rootScope.$on(SUCCESS_MESSAGE, function(msg, data) {
+      console.log("The request was successful! Object received: " + JSON.stringify(data));
+      $scope.populateUsers();
+    });
+
+    $rootScope.$on(FAILURE_MESSAGE, function(msg, data) {
+      console.log("Failed request! Object received: " + JSON.stringify(data));
+      $scope.populateUsers();
+    });
 
   }]);
