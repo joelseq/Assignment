@@ -21,6 +21,55 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+
+/*
+  Socket setup
+ */
+io.on('connection', function(socket) {
+   //Globals
+   var defaultRoom = 'general';
+   var rooms = ["general", "angular", "socket.io"];
+
+   //Emit the rooms array
+   socket.emit('setup', {
+      rooms: rooms
+   });
+
+   //Listen for new users
+   socket.on('new user', function(data) {
+      data.room = defaultRoom;
+      //New user joins the default room
+      socket.join(defaultRoom);
+      //Tell all those in the room that a new user joined
+      io.in(defaultRoom).emit('user joined', data);
+   });
+
+   socket.on('switch room', function(data) {
+      //Handles joining and leaving rooms
+      socket.leave(data.oldRoom);
+      socket.join(data.newRoom);
+      io.in(data.oldRoom).emit('user left', data);
+      io.in(data.newRoom).emit('user joined', data);
+   });
+
+   //Listens for a new chat message
+   socket.on('new message', function(data) {
+      //Create message
+      var newMsg = new Chat({
+         username: data.username,
+         content: data.message,
+         room: data.room.toLowerCase(),
+         created: new Date()
+      });
+      //Save it to database
+      newMsg.save(function(err, msg){
+         //Send message to those connected in the room
+         io.in(msg.room).emit('message created', msg);
+      });
+   });
+});
 
 /**
  * Listen on provided port, on all network interfaces.

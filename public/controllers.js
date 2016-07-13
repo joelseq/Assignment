@@ -17,6 +17,8 @@ assignmentApp
 
     $scope.addUser = function() {
        ServerService.sendPost({ fname: $scope.fname, lname: $scope.lname }, "", SUCCESS_MESSAGE, FAILURE_MESSAGE);
+       $scope.fname = null;
+       $scope.lname = null;
     };
 
 
